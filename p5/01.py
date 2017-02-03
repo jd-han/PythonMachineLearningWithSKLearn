@@ -18,6 +18,10 @@ def Key_Stats(gather="Total Debt/Equity (mrq)"):
         each_file = os.listdir(each_dir)
         #print(each_file)
         #time.sleep(15)
+
+        #want to print ticker(stock value), \\ for \
+        ticker = each_dir.split("\\")[1]
+
         if len(each_file) > 0:
             for file in each_file:
 
@@ -25,7 +29,18 @@ def Key_Stats(gather="Total Debt/Equity (mrq)"):
                 # so take that as date by reg type
                 date_stamp = datetime.strptime(file, '%Y%m%d%H%M%S.html')
                 unix_time = time.mktime(date_stamp.timetuple())
-                print(date_stamp, unix_time)
-                time.sleep(15)
+                #print(date_stamp, unix_time)
+                #time.sleep(15)
+
+                full_file_path = each_dir + '/' + file
+                print(full_file_path)
+                source = open(full_file_path, 'r').read()
+                #print(source)
+                #time.sleep(15)
+
+                value = source.split(gather+':</td><td class="yfnc_tabledata1">')[1].split('</td>')[0]
+                print(ticker + ":",value)
+            time.sleep(15)
+
 
 Key_Stats()
