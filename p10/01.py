@@ -64,7 +64,7 @@ def Key_Stats(gather="Total Debt/Equity (mrq)"):
 
                 full_file_path = each_dir + '/' + file
                 #print(full_file_path)
-                source = open(full_file_path, 'r').read()
+                source = open(full_file_path,'r').read()
                 #print(source)
                 #time.sleep(15)
 
@@ -73,10 +73,16 @@ def Key_Stats(gather="Total Debt/Equity (mrq)"):
                         value = float(source.split(gather+':</td><td class="yfnc_tabledata1">')[1].split('</td>')[0])
                         #print(ticker + ":",value)
                     except Exception as e:
-                        value = float(source.split(gather + ':</td>\n<td class="yfnc_tabledata1">')[1].split('</td>')[0])
-                        #print("line 76 : value"+str(e), ticker, file) #could not convert string to float: 'N/A' , list index out of range
-                        print("line 76 : value is : ",value)
-                        #time.sleep(15)
+                        try:
+                            value = float(source.split(gather + ':</td>\n<td class="yfnc_tabledata1">')[1].split('</td>')[0])
+                            #print("line 76 : value"+str(e), ticker, file) #could not convert string to float: 'N/A' , list index out of range
+                            #rint("line 76 : value is : ",value)
+                            #time.sleep(15)
+                        except Exception as e:
+                            pass
+                            #print(str(e),ticker, file)
+                            #time.sleep(15)
+                            #value = float(source.split(gather + ':</td>\n<td class="yfnc_tabledata1">')[1].split('</td>')[0])
 
                     try:
                         #date what you going to look for
@@ -114,18 +120,21 @@ def Key_Stats(gather="Total Debt/Equity (mrq)"):
                         try:
                             stock_price = (source.split('</small><big><b>')[1].split('</b></big>')[0])
                             #print("line 114 : ",stock_price +"\t ticker : "+ticker, "\t file : "+file)
-                            stock_price = re.search(r'(\d{1,8}\.\d{1,8})', stock_price)
+                            stock_price = re.search(r'(\d{1,8}\.\d{1,8})',stock_price)
                             stock_price = float(stock_price.group(1))
 
-                            print(stock_price)
+                            #print(stock_price)
                             #time.sleep(15)
 
                         except Exception as e:
-                            stock_price = (source.split('<span class="time_rtq_ticker">')[1].split('</span>')[0])
-                            stock_price = re.search(r'(\d{1,8}\.\d{1,8})', stock_price)
-                            stock_price = float(stock_price.group(1))
+                            try:
+                                stock_price = (source.split('<span class="time_rtq_ticker">')[1].split('</span>')[0])
+                                stock_price = re.search(r'(\d{1,8}\.\d{1,8})', stock_price)
+                                stock_price = float(stock_price.group(1))
+                            except Exception as e:
+                                print(str(e),'a;lsdkfh',file,ticker)
 
-                            print('Latest:',stock_price)
+                           # print('Latest:',stock_price)
 
 
                             #print("stock price"+str(e), "\t ticker : "+ticker, "\t file : "+file)
